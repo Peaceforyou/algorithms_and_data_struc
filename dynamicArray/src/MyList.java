@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class MyList<T> {
+public class MyList<T>{
     private int capacity = 10;
     private int size = 0;
     private Object[] array = new Object[capacity];
@@ -10,6 +10,21 @@ public class MyList<T> {
         overFlow();
         array[size] = val;
         size++;
+    }
+
+    public void add(int id,T val) {
+        checkBoundsForAdd(id);
+        overFlow();
+        for (int i = size - 1; i >= id; i--) {
+            array[i + 1] = array[i];
+        }
+        array[id] = val;
+        size++;
+    }
+    private void checkBoundsForAdd(int id) {
+        if (id < 0 || id > size) {
+            throw new IndexOutOfBoundsException("Index out of bound!");
+        }
     }
 
     public T get(int index) {
@@ -49,4 +64,22 @@ public class MyList<T> {
     }
 
     public int size() {return size;}
+
+    public void remove(int id) {
+        checkBounds(id);
+        for (int i = id; i < size - 1;i++) {
+            array[i] = array[i + 1];
+        }
+        array[size - 1] = null;
+        size--;
+    }
+    public boolean remove(T object) {
+        for (int i = 0; i < size; i++) {
+            if (array[i] == null ? object == null : array[i].equals(object)) {
+                remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
 }
